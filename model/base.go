@@ -18,7 +18,10 @@ func Init() {
 	dsn := dbuser + ":" + dbpwd + "@tcp(" + dbhost + ":" + dbport + ")/" + dbname + "?charset=utf8&loc=Asia%2FShanghai"
 	orm.RegisterDataBase("default", "mysql", dsn)
 	orm.RegisterModel(
-		//new(User),
+		new(Users),
+		new(Roles),
+		new(Types),
+		new(Permissions),
 		)
 }
 
