@@ -168,6 +168,49 @@
                 "                    </tr>");
         });
     });
+
+    function sumRow(num) {
+        var type_val = $('#type-value'+num).val();
+        var size_val = $('#size-value'+num).val();
+        $('#row-value'+num).text(type_val * size_val);
+        sumAll();
+    }
+
+    function sumAll() {
+        var hidden_val = Number($('#hidden-value').val());
+        var sum = 0;
+        if (hidden_val) {
+            for(j = 0; j <= hidden_val; j++) {
+                sum = sum + Number($('#row-value'+j).text());
+            }
+            $('#money-sum').text(sum);
+        } else {
+            $('#money-sum').text($('#row-value0').text())
+        }
+
+        totalMoney();
+    }
+    
+    function totalMoney() {
+        var money = $('#money-sum').text();
+        var coupon = $('#coupon-value').val() ? $('#coupon-value').val() : 0;
+        $('#coupon').text(coupon);
+        $('#moneys').text(Number(money) + Number(coupon));
+    }
+
+    function inputnum(obj,val){
+        obj.value = obj.value.replace(/[^\d.]/g,""); //清除"数字"和"."以外的字符
+        obj.value = obj.value.replace(/^\./g,""); //验证第一个字符是数字
+        obj.value = obj.value.replace(/\.{2,}/g,""); //只保留第一个, 清除多余的
+        obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+        obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3'); //只能输入两个小数
+    }
+
+    function inputChange() {
+        var num = $('#hidden-value').val();
+        sumRow(num);
+    }
+
 </script>
 </body>
 </html>
