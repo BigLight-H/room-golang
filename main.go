@@ -5,6 +5,7 @@ import (
 	"room/models"
 	_ "room/routers"
 	"github.com/astaxie/beego"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func init()  {

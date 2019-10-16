@@ -6,12 +6,16 @@
 */
 package models
 
-import "time"
+import (
+	"time"
+)
 
 type Types struct {
 	Id      int
 	Type    string
-	Money   int64
+	Money   float64
+	Pid     int
+	Path    string
 	Created time.Time
 	Updated time.Time
 }

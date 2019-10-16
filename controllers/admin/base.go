@@ -11,5 +11,5 @@ type baseController struct {
 }
 
 func (p *baseController) Prepare()  {
-
+	p.o = orm.NewOrm()
 }

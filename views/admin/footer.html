@@ -156,16 +156,26 @@
 
     //追加表元素
     $(document).ready(function(){
+        data = {{ .select }}
         $("#add-tb").click(function(){
+            num = Number($('#hidden-value').val()) + 1;
             $("#now-table").append("<tr>\n" +
-                "                        <td>\n" +
-                "                            <span class=\"text-inverse\">Redesign Service</span><br />\n" +
-                "                            <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id sagittis arcu.</small>\n" +
-                "                        </td>\n" +
-                "                        <td class=\"text-center\">$50.00</td>\n" +
-                "                        <td class=\"text-center\">50</td>\n" +
-                "                        <td class=\"text-right\">$2,500.00</td>\n" +
-                "                    </tr>");
+                "                            <td>\n" +
+                "                                <div class=\"col-md-8\">\n" +
+                "                                    <select class=\"default-select2 form-control\" id=\"type-value"+num+"\">\n" +
+                "                                        <option value=\"\">请选择类型</option>\n" +
+                                                            data +
+                "                                    </select>\n" +
+                "                                </div>\n" +
+                "                            </td>\n" +
+                "                            <td class=\"text-center\">\n" +
+                "                                <div class=\"col-md-12\">\n" +
+                "                                    <input data-toggle=\"text\" class=\"form-control\" type=\"text\" placeholder=\"输入尺寸\" id=\"size-value"+num+"\" oninput=\"inputnum(this)\" onchange=\"inputChange("+num+");\" />\n" +
+                "                                </div>\n" +
+                "                            </td>\n" +
+                "                            <td class=\"text-right\" id=\"row-value"+num+"\">0</td>\n" +
+                "                        </tr>");
+            $('#hidden-value').val(num)
         });
     });
 
