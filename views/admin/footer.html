@@ -154,7 +154,7 @@
 <script src="/static/assets/plugins/DataTables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
 <script src="/static/assets/js/demo/table-manage-default.demo.min.js"></script>
 <!-- ================== END PAGE LEVEL JS ================== -->
-
+<script src="/static/sweetalert2.js"></script>
 <script>
     $(document).ready(function() {
         App.init();
@@ -248,6 +248,45 @@
             $('#compute').append(
                  "<p>"+ type_val +" * "+ size_val +" = " + sum +" </p>"
             )
+        }
+    }
+
+    //添加分类
+    function push_types() {
+        title = $('#push-type-name').val();
+        money = $('#push-type-money').val();
+        sel = $('#push-type-sel').val();
+        if (title == '') {
+            swal(
+                "分类名字不能为空!",
+                '',
+                'error'
+            );
+        } else if (sel != '' && money == '') {
+            swal(
+                "分类金额不能为空!",
+                '',
+                'error'
+            );
+        } else {
+            $.ajax({
+                type : "POST",
+                url : "/admin/types/add",    //请求发送到TestServlet处
+                data : {title:title,money:money,sel:sel},
+                dataType : "json",        //返回数据形式为json
+                success : function(res) {
+                    if (res == 1) {
+                        swal(
+                            "添加成功!",
+                            '',
+                            'success'
+                        );
+                        setTimeout("location.reload()",2500);
+                    } else {
+                        swal("添加失败!", "", "error");
+                    }
+                }
+            });
         }
     }
 

@@ -122,3 +122,21 @@ func DateChange(str string) time.Time  {
 
 	return theTime
 }
+
+//字符串转换int
+func StrToInt(str string) int {
+	i,_ := strconv.Atoi(str)
+	return i
+}
+
+//int64转int
+func Int64ToInt(id int64) int {
+	string := strconv.FormatInt(id,10)
+	return StrToInt(string)
+}
+
+//int转str
+func IntToStr( i int ) string {
+	string := strconv.Itoa(i)
+	return string
+}

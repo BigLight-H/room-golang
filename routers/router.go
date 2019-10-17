@@ -17,6 +17,7 @@ func init() {
 	beego.Router("/admin/rebate/list", &admin.AdminController{}, "get:RebateList")
 	beego.Router("/admin/types/list", &admin.AdminController{}, "get:TypesList")
 	beego.Router("/admin/types/add", &admin.AdminController{}, "get:TypesTpl")
+	beego.Router("/admin/types/add", &admin.AdminController{}, "post:AddTypes")
 	beego.Router("/admin/rebate/add", &admin.AdminController{}, "get:TypesList")
 	beego.Router("/admin/rebate/add", &admin.AdminController{}, "post:AddRebate")
 }

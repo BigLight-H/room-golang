@@ -3,6 +3,7 @@ package admin
 import (
 	"room/models"
 	"room/util"
+	"strconv"
 	"time"
 )
 
@@ -45,7 +46,40 @@ func (a *AdminController) TypesList() {
 
 //添加类型
 func (a *AdminController) AddTypes() {
+	title := a.GetString("title")
+	money := a.GetString("money")
+	sel := a.GetString("sel")
+	types := models.Types{}
+	types.Money = money
+	types.Type = title
+	if sel != "" {
+		types.Pid = util.StrToInt(sel)
+	} else {
+		types.Pid = 0
+	}
+	id,err := a.o.Insert(&types)
+	if err == nil {
+		t := models.Types{Id:util.Int64ToInt(id)}
+		t.Path = a.getTypePath(types.Pid)+","+strconv.FormatInt(id,10)
+		_,err := a.o.Update(&t,"Path")
+		if err == nil {
+			a.Data["json"] = 1
+			a.ServeJSON()
+		}
+	}
+	a.Data["json"] = 0
+	a.ServeJSON()
+}
 
+func (a *AdminController) getTypePath(pid int) string {
+	if pid > 0 {
+		t := models.Types{Id:pid}
+		err := a.o.Read(&t)
+		if err == nil {
+			return t.Path
+		}
+	}
+	return "0"
 }
 
 //修改类型
