@@ -22,6 +22,7 @@ func Init() {
 		new(Roles),
 		new(Types),
 		new(Permissions),
+		new(Rebate),
 		)
 }
 

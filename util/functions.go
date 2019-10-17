@@ -2,17 +2,17 @@ package util
 
 import (
 	"crypto/md5"
+	"crypto/rand"
+	"encoding/base64"
 	"fmt"
 	"github.com/astaxie/beego"
 	"gopkg.in/gomail.v2"
+	"io"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
-	"net/url"
-	"encoding/base64"
-	"crypto/rand"
-	"io"
 	"time"
 )
 
@@ -104,4 +104,21 @@ func DoHttpGetRequest(url string) (rlt string, err error) {
 func ChangeInt(number int64) (str string) {
 	string := strconv.FormatInt(number,10)
 	return string
+}
+
+//时间格式转换
+func DateChange(str string) time.Time  {
+	//转化所需模板
+
+	timeLayout := "2006年01月02日 15:04:05"
+
+	//重要：获取时区
+
+	loc, _ := time.LoadLocation("Asia/Shanghai")
+
+	//使用模板在对应时区转化为time.time类型
+
+	theTime, _ := time.ParseInLocation(timeLayout, str, loc)
+
+	return theTime
 }

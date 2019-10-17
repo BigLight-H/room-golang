@@ -13,7 +13,7 @@ import (
 type Types struct {
 	Id      int
 	Type    string
-	Money   float64
+	Money   string
 	Pid     int
 	Path    string
 	Created time.Time
