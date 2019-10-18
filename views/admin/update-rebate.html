@@ -1,0 +1,63 @@
+{{template "admin/rebates/header.html" .}}
+<!-- begin #content -->
+<div id="content" class="content">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb hidden-print pull-right">
+        <li class="breadcrumb-item"><a href="/admin/index">首页</a></li>
+        <li class="breadcrumb-item active">活动修改</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header hidden-print">活动修改</h1>
+    <!-- end page-header -->
+    <!-- begin row -->
+    <div class="row">
+        <!-- begin col-6 -->
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <!-- begin panel -->
+            <div class="panel panel-inverse" data-sortable-id="form-plugins-4">
+                <!-- begin panel-body -->
+                <div class="panel-body panel-form" style="padding: 2.5rem !important;">
+                    <div class="form-group row m-b-15">
+                        <label class="col-form-label col-md-3">活动名称</label>
+                        <div class="col-md-9">
+                            <input id="push-name" type="text" class="form-control m-b-5" placeholder="请输入活动名称" value="{{ .data.Title }}">
+                        </div>
+                    </div>
+                    <div class="form-group row m-b-15">
+                        <label class="col-form-label col-md-3">参与活动最低金额</label>
+                        <div class="col-md-9">
+                            <input id="push-money" type="text" class="form-control m-b-5" placeholder="参与活动最低金额" oninput="inputnum(this)" value="{{ .data.TallyMoney }}">
+                        </div>
+                    </div>
+                    <div class="form-group row m-b-15">
+                        <label class="col-form-label col-md-3">活动折扣金额</label>
+                        <div class="col-md-9">
+                            <input id="push-moneys" type="text" class="form-control m-b-5" placeholder="活动折扣金额" oninput="inputnum(this)" value="{{ .data.Rebate }}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-md-3">活动时间区间</label>
+                        <div class="col-md-9">
+                            <div class="input-group input-daterange">
+                                <input id="push-star" type="text" class="form-control" value="{{convertTime .data.StartDate}}" placeholder="开始时间">
+                                <span class="input-group-addon">至</span>
+                                <input id="push-end" type="text" class="form-control" value="{{convertTime .data.EndDate}}" placeholder="结束时间">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <a href="javascript:;" class="btn btn-primary m-r-5 m-b-5 pull-right" onclick="push_rebate()">修改活动</a>
+                    </div>
+                </div>
+                <!-- end panel-body -->
+            </div>
+            <!-- end panel -->
+        </div>
+        <!-- end col-6 -->
+    </div>
+    <!-- end row -->
+</div>
+<input type="hidden" value="{{ .data.Id }}" id="rebate-ids" >
+<!-- end #content -->
+{{template "admin/rebates/footer.html" .}}

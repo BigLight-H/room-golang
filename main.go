@@ -6,6 +6,7 @@ import (
 	_ "room/routers"
 	"github.com/astaxie/beego"
 	_ "github.com/go-sql-driver/mysql"
+	"room/util"
 )
 
 func init()  {
@@ -16,6 +17,7 @@ func init()  {
 
 
 func main() {
+	beego.AddFuncMap("convertTime", util.TimeToStr)//模板函数
 	beego.Run()
 }
 

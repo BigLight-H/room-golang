@@ -74,6 +74,10 @@ func TimeSet() string {
 	return tm.Format("2006-01-02 15:04:05")
 }
 
+func TimeToStr(t time.Time) string {
+	return t.Format("2006年01月02日")
+}
+
 // 自定义http get请求函数
 // 入参：请求url
 // 返回值：rlt，天气数据。err，错误信息

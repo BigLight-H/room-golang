@@ -4,11 +4,11 @@
     <!-- begin breadcrumb -->
     <ol class="breadcrumb hidden-print pull-right">
         <li class="breadcrumb-item"><a href="/admin/index">首页</a></li>
-        <li class="breadcrumb-item active">分类添加</li>
+        <li class="breadcrumb-item active">分类修改</li>
     </ol>
     <!-- end breadcrumb -->
     <!-- begin page-header -->
-    <h1 class="page-header hidden-print">分类添加</h1>
+    <h1 class="page-header hidden-print">分类修改</h1>
     <!-- end page-header -->
     <div class="row">
         <!-- begin col-6 -->
@@ -19,13 +19,13 @@
                     <div class="form-group row m-b-15">
                         <label class="col-form-label col-md-3">分类名称</label>
                         <div class="col-md-9">
-                            <input id="push-type-name" type="text" class="form-control m-b-5" placeholder="请输入分类名称">
+                            <input id="push-type-name" type="text" class="form-control m-b-5" placeholder="请输入分类名称" value="{{ .data.Type }}">
                         </div>
                     </div>
                     <div class="form-group row m-b-15">
                         <label class="col-form-label col-md-3">分类金额</label>
                         <div class="col-md-9">
-                            <input id="push-type-money" type="text" class="form-control m-b-5" placeholder="分类金额" oninput="inputnum(this)">
+                            <input id="push-type-money" type="text" class="form-control m-b-5" placeholder="分类金额" oninput="inputnum(this)" value="{{ .data.Money }}">
                         </div>
                     </div>
                     <div class="form-group row m-b-15">
@@ -33,22 +33,13 @@
                         <div class="col-md-9">
                             <select class="form-control" id="push-type-sel">
                                 <option value="">请选择上级分类</option>
-                                {{range $elem := .types}}
-                                    {{if eq $elem.Pid 0 }}
-                                        <option value="{{ $elem.Id }}">{{ $elem.Type }}</option>
-                                            {{range $v := $.types}}
-                                                {{if eq $v.Pid $elem.Id}}
-                                                    <option value="{{ $v.Id}}">&nbsp;&nbsp;&nbsp;&nbsp;{{ $v.Type }}</option>
-                                                {{end}}
-                                            {{end}}
-                                    {{end}}
-                                {{end}}
+                                {{str2html .str}}
                             </select>
                             <small>分类默认为顶级,还需再添加一个子级</small>
                         </div>
                     </div>
                     <div class="panel-body">
-                        <a href="javascript:;" onclick="push_types()" class="btn btn-primary m-r-5 m-b-5 pull-right">添加分类</a>
+                        <a href="javascript:;" onclick="push_types()" class="btn btn-primary m-r-5 m-b-5 pull-right">修改分类</a>
                     </div>
                 </div>
                 <!-- end panel-body -->
@@ -59,5 +50,5 @@
     </div>
 </div>
 <!-- end #content -->
-
+<input type="hidden" value="{{ .data.Id }}" id="type-ids">
 {{template "admin/footer.html" .}}
