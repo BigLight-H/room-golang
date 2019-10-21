@@ -26,16 +26,16 @@
                     <thead>
                     <tr>
                         <th>类 型</th>
-                        <th class="text-center" width="40%">尺 寸</th>
-                        <th class="text-right" width="20%">金 额</th>
+                        <th class="text-center" width="20%">尺 寸</th>
+                        <th class="text-right" width="30%">金 额</th>
                     </tr>
                     </thead>
                     <tbody id="now-table">
                         <tr>
-                            <td>
-                                <div class="col-md-8">
+                            <td style="padding-left: 0;">
+                                <div class="col-md-10" style="padding: 0">
                                     <select class="default-select2 form-control" id="type-value0">
-                                        <option value="">请选择类型</option>
+                                        <option value="">选择类型</option>
                                         {{range $elem := .types}}
                                             {{if eq $elem.Pid 0 }}
                                                 <optgroup label="{{ $elem.Type }}">
@@ -50,12 +50,12 @@
                                     </select>
                                 </div>
                             </td>
-                            <td class="text-center">
-                                <div class="col-md-12">
+                            <td class="text-center" style="padding-left: 0;padding-right: 0;">
+                                <div class="col-md-12" style="padding: 0;">
                                     <input data-toggle="text" class="form-control" type="text" placeholder="输入尺寸" id="size-value0" oninput="inputnum(this)" onchange="inputChange(0);" />
                                 </div>
                             </td>
-                            <td class="text-right" id="row-value0">0</td>
+                            <td class="text-right" id="row-value0" style="padding-right: 0;line-height: 36px;">0.00</td>
                         </tr>
                     </tbody>
                 </table>
@@ -131,25 +131,6 @@
 
         </div>
         <!-- end invoice-content -->
-        <!-- begin invoice-note -->
-        <div class="invoice-note">
-            * Make all cheques payable to [Your Company Name]<br />
-            * Payment is due within 30 days<br />
-            * If you have any questions concerning this invoice, contact  [Name, Phone Number, Email]
-        </div>
-        <!-- end invoice-note -->
-        <!-- begin invoice-footer -->
-        <div class="invoice-footer">
-            <p class="text-center m-b-5 f-w-600">
-                THANK YOU FOR YOUR BUSINESS
-            </p>
-            <p class="text-center">
-                <span class="m-r-10"><i class="fa fa-fw fa-lg fa-globe"></i> matiasgallipoli.com</span>
-                <span class="m-r-10"><i class="fa fa-fw fa-lg fa-phone-volume"></i> T:016-18192302</span>
-                <span class="m-r-10"><i class="fa fa-fw fa-lg fa-envelope"></i> rtiemps@gmail.com</span>
-            </p>
-        </div>
-        <!-- end invoice-footer -->
     </div>
     <!-- end invoice -->
 </div>
