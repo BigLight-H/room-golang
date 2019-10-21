@@ -26,16 +26,17 @@
                     <thead>
                     <tr>
                         <th>类 型</th>
-                        <th class="text-center" width="40%">尺 寸</th>
-                        <th class="text-right" width="20%">金 额</th>
+                        <th class="text-center" width="20%">尺 寸</th>
+                        <th class="text-center" width="30%">金 额</th>
+                        <th class="text-right" width="1%" style="padding-right: 0;padding-left: 0;">操 作</th>
                     </tr>
                     </thead>
                     <tbody id="now-table">
-                        <tr>
-                            <td>
-                                <div class="col-md-8">
+                        <tr id="list_0">
+                            <td style="padding-left: 0;">
+                                <div class="col-md-10" style="padding: 0">
                                     <select class="default-select2 form-control" id="type-value0">
-                                        <option value="">请选择类型</option>
+                                        <option value="">选择类型</option>
                                         {{range $elem := .types}}
                                             {{if eq $elem.Pid 0 }}
                                                 <optgroup label="{{ $elem.Type }}">
@@ -50,18 +51,21 @@
                                     </select>
                                 </div>
                             </td>
-                            <td class="text-center">
-                                <div class="col-md-12">
+                            <td class="text-center" style="padding-left: 0;padding-right: 0;">
+                                <div class="col-md-12" style="padding: 0;">
                                     <input data-toggle="text" class="form-control" type="text" placeholder="输入尺寸" id="size-value0" oninput="inputnum(this)" onchange="inputChange(0);" />
                                 </div>
                             </td>
-                            <td class="text-right" id="row-value0">0</td>
+                            <td class="text-right" id="row-value0" style="padding-right: 0;line-height: 36px;text-align: center !important; ">0.00</td>
+                            <td onclick="delList(0)" class="text-right" id="row-value0" style="line-height: 36px;padding-left: 0;padding-right: 0;text-align: center !important;">
+                                <i class="fas fa-lg fa-fw m-r-10 fa-window-close" style="margin: 0 !important;color: red"></i>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
                 <hr style="background: #cacaca;">
                 <p>
-                    <a href="#" class="btn btn-primary btn-block" id="add-tb">增加表单行数</a>
+                    <a href="#" class="btn btn-info btn-block" id="add-tb">增加表单行数</a>
                 </p>
             </div>
             <!-- end table-responsive -->
@@ -79,25 +83,31 @@
                 </div>
             </div>
 
+            <div class="invoice-content">
+                <p>
+                    <a href="#" class="btn btn-primary btn-block" onclick="countResult()">计算结果</a>
+                </p>
+            </div>
+
             <!-- begin invoice-price -->
             <div class="invoice-price">
                 <div class="invoice-price-left">
                     <div class="invoice-price-row">
                         <div class="sub-price">
                             <small>总金额</small>
-                            <span class="text-inverse" id="money-sum">$4,500.00</span>
+                            <span class="text-inverse" id="money-sum">0.00</span>
                         </div>
                         <div class="sub-price">
                             <i class="fas fa-lg fa-fw fa-minus"></i>
                         </div>
                         <div class="sub-price">
                             <small>活动优惠</small>
-                            <span class="text-inverse" id="coupon">$108.00</span>
+                            <span class="text-inverse" id="coupon">0.00</span>
                         </div>
                     </div>
                 </div>
                 <div class="invoice-price-right">
-                    <small>实付金额</small> <span class="f-w-600" id="moneys">$4508.00</span>
+                    <small>实付金额</small> <span class="f-w-600" id="moneys">0.00</span>
                 </div>
             </div>
             <!-- end invoice-price -->
@@ -131,25 +141,6 @@
 
         </div>
         <!-- end invoice-content -->
-        <!-- begin invoice-note -->
-        <div class="invoice-note">
-            * Make all cheques payable to [Your Company Name]<br />
-            * Payment is due within 30 days<br />
-            * If you have any questions concerning this invoice, contact  [Name, Phone Number, Email]
-        </div>
-        <!-- end invoice-note -->
-        <!-- begin invoice-footer -->
-        <div class="invoice-footer">
-            <p class="text-center m-b-5 f-w-600">
-                THANK YOU FOR YOUR BUSINESS
-            </p>
-            <p class="text-center">
-                <span class="m-r-10"><i class="fa fa-fw fa-lg fa-globe"></i> matiasgallipoli.com</span>
-                <span class="m-r-10"><i class="fa fa-fw fa-lg fa-phone-volume"></i> T:016-18192302</span>
-                <span class="m-r-10"><i class="fa fa-fw fa-lg fa-envelope"></i> rtiemps@gmail.com</span>
-            </p>
-        </div>
-        <!-- end invoice-footer -->
     </div>
     <!-- end invoice -->
 </div>
