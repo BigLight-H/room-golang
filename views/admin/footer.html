@@ -53,7 +53,7 @@
         data = {{ .select }}
         $("#add-tb").click(function(){
             num = Number($('#hidden-value').val()) + 1;
-            $("#now-table").append("<tr>\n" +
+            $("#now-table").append("<tr id=\"list_"+num+"\">\n" +
                 "                            <td style=\"padding-left: 0;\">\n" +
                 "                                <div class=\"col-md-8\" style=\"padding: 0\">\n" +
                 "                                    <select class=\"default-select2 form-control\" id=\"type-value"+num+"\">\n" +
@@ -67,37 +67,81 @@
                 "                                    <input data-toggle=\"text\" class=\"form-control\" type=\"text\" placeholder=\"输入尺寸\" id=\"size-value"+num+"\" oninput=\"inputnum(this)\" onchange=\"inputChange("+num+");\" />\n" +
                 "                                </div>\n" +
                 "                            </td>\n" +
-                "                            <td class=\"text-right\" id=\"row-value"+num+"\" style=\"padding-right: 0;line-height: 36px;\">0</td>\n" +
+                "                            <td class=\"text-right\" id=\"row-value"+num+"\" style=\"padding-right: 0;line-height: 36px;text-align: center !important;\">0.00</td>\n" +
+                "                            <td onclick=\"delList("+num+")\" class=\"text-right\" style=\"line-height: 36px;padding-left: 0;padding-right: 0;text-align: center !important;\">\n" +
+                "                                <i class=\"fas fa-lg fa-fw m-r-10 fa-window-close\" style=\"margin: 0 !important;color: red\"></i>\n" +
+                "                            </td>" +
                 "                        </tr>");
             $('#hidden-value').val(num)
         });
     });
 
+    function delList(num) {
+        old_num = Number($('#hidden-value').val());
+        if ( old_num > 0 ) {
+            res = Number(num) - old_num;
+            if (res == 0) {
+                $("#list_"+num).remove();
+                $('#hidden-value').val(old_num - 1);
+            } else {
+                swal(
+                    "依次倒序删除!",
+                    '',
+                    'error'
+                );
+            }
+        } else {
+            swal(
+                "不能删除!",
+                '',
+                'error'
+            );
+        }
+
+    }
+
+
     function sumRow(num) {
         var type_val = $('#type-value'+num).val();
         var size_val = $('#size-value'+num).val();
         $('#row-value'+num).text(type_val * size_val);
+    }
+
+    function countResult() {
         sumAll();
         compute();
+        countTxt();
     }
 
     function sumAll() {
         var hidden_val = Number($('#hidden-value').val());
         var sum = 0;
         var str = '';
+        coupon_val = $('#coupon-value').val();
         if (hidden_val) {
             for(j = 0; j <= hidden_val; j++) {
                 val = $('#row-value'+j).text();
                 sum = sum + Number(val);
                 str += val+' + ';
             }
-            $('#compute-all').text(str.slice(0,-3)+' = '+sum);
-            $('#money-sum').text(sum);
+            if (Number(coupon_val)) {
+                new_sum = sum - Number(coupon_val);
+                $('#compute-all').text('(' + str.slice(0,-3)+' ) - '+ coupon_val +' = '+ new_sum);
+                $('#money-sum').text(new_sum);
+            } else {
+                $('#compute-all').text(str.slice(0,-3)+' = '+sum);
+                $('#money-sum').text(sum);
+            }
         } else {
-            $('#money-sum').text($('#row-value0').text())
-            $('#compute-all').text($('#row-value0').text());
+            if (Number(coupon_val)) {
+                sum_money = Number($('#row-value0').text()) - Number(coupon_val);
+                $('#money-sum').text(sum_money);
+                $('#compute-all').text($('#row-value0').text() + ' - ' + coupon_val + ' = ' + sum_money);
+            } else {
+                $('#money-sum').text($('#row-value0').text());
+                $('#compute-all').text($('#row-value0').text());
+            }
         }
-
         totalMoney();
     }
     
@@ -109,8 +153,42 @@
         } else {
             $('#coupon').text( coupon );
         }
-        $('#moneys').text(Number(money) - Number(coupon));
+        $('#moneys').text(Number(money) - Number(getAmount(money,coupon)));
     }
+
+    //总数大于活动数才可以参加活动
+    function getAmount(money,amount) {
+        if (Number(amount) >= Number(money)) {
+            return 0;
+        }
+        return amount;
+    }
+    
+    //统计文本
+    function countTxt() {
+        $('#console').text('');
+        var hidden_val = Number($('#hidden-value').val());
+        str = '';
+        for(j = 0; j <= hidden_val; j++) {
+            var type_txt = $('#type-value'+j).find("option:selected").text();
+            var type_val = $('#type-value'+j).val();
+            var size_val = $('#size-value'+j).val();
+            var sum = type_val * size_val;
+            str += type_txt+'($'+type_val+'/尺), 预估'+size_val+'尺, 价格为$'+sum+'\n';
+        }
+        money_sum = $('#money-sum').val();
+        coupon = $('#coupon').val();
+        moneys = $('#moneys').val();
+        if (coupon == '' || coupon == 0) {
+            console.log(moneys);
+            str += '预估总价为:$'+moneys;
+        } else {
+            str += '预估总价为:$'+money_sum+',参加活动 '+$('#coupon').val()+'后,价格为$'+moneys;
+        }
+
+        $('#console').val(str);
+    }
+    
 
     function inputnum(obj,val){
         obj.value = obj.value.replace(/[^\d.]/g,""); //清除"数字"和"."以外的字符
