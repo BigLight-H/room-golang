@@ -5,7 +5,7 @@
 <!--<![endif]-->
 <head>
 	<meta charset="utf-8" />
-	<title>Color Admin | Login Page</title>
+	<title>家私计算器 | 登录</title>
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />
@@ -56,26 +56,24 @@
 			<!-- end brand -->
 			<!-- begin login-content -->
 			<div class="login-content">
-				<form action="index.html" method="GET" class="margin-bottom-0">
-					<div class="form-group m-b-20">
-						<input type="text" class="form-control form-control-lg" placeholder="用户名" required />
-					</div>
-					<div class="form-group m-b-20">
-						<input type="password" class="form-control form-control-lg" placeholder="密码" required />
-					</div>
-					<div class="checkbox checkbox-css m-b-20">
-						<input type="checkbox" id="remember_checkbox" /> 
-						<label for="remember_checkbox">
-							记住我
-						</label>
-					</div>
-					<div class="login-buttons">
-						<button type="submit" class="btn btn-success btn-block btn-lg">登&nbsp;&nbsp;&nbsp;&nbsp;录</button>
-					</div>
-					<div class="m-t-20">
-						没有账号? <a href="javascript:;">进入注册</a>
-					</div>
-				</form>
+				<div class="form-group m-b-20">
+					<input id="name" type="text" class="form-control form-control-lg" placeholder="用户名" required />
+				</div>
+				<div class="form-group m-b-20">
+					<input id="pwd" type="password" class="form-control form-control-lg" placeholder="密码" required />
+				</div>
+				<div class="checkbox checkbox-css m-b-20">
+					<input type="checkbox" id="remember_checkbox" />
+					<label for="remember_checkbox">
+						记住我
+					</label>
+				</div>
+				<div class="login-buttons">
+					<a class="btn btn-success btn-block btn-lg" href="#" onclick="goLogin()">登&nbsp;&nbsp;&nbsp;&nbsp;录</a>
+				</div>
+				<div class="m-t-20">
+					没有账号? <a href="/register">进入注册</a>
+				</div>
 			</div>
 			<!-- end login-content -->
 		</div>
@@ -113,12 +111,70 @@
 	<script src="/static/assets/js/demo/login-v2.demo.min.js"></script>
 	<!-- ================== END PAGE LEVEL JS ================== -->
 	<script src="/static/sweetalert2.js"></script>
-
+	<script src="/static/js/jquery.cookie.min.js"></script>
 	<script>
 		$(document).ready(function() {
 			App.init();
 			LoginV2.init();
+			uname = $.cookie('name');
+			pwd = $.cookie('pwd');
+			if (uname && pwd) {
+				$('#name').val(uname);
+				$('#pwd').val(pwd);
+				$('#remember_checkbox').checked = true;
+			}
 		});
+
+		function goLogin() {
+			uname = $('#name').val();
+			pwd = $('#pwd').val();
+			remember_checkbox = $('#remember_checkbox').val();
+			var pattern = /^[\w_-]{6,10}$/;
+			if (uname == '') {
+				swal(
+						"名字不能为空!",
+						'',
+						'error'
+				);
+			} else if (pwd == '') {
+				swal(
+						"密码不能为空!",
+						'',
+						'error'
+				);
+			}  else if (! pattern.test(pwd)) {
+				swal(
+						"密码长度6-10之间!",
+						'',
+						'error'
+				);
+			} else {
+				$.ajax({
+					type : "post",
+					url : "/login",    //请求发送到TestServlet处
+					data : {name:uname,pwd:pwd},
+					dataType : "json",        //返回数据形式为json
+					success : function(res) {
+						if (res.Status) {
+							swal(
+									res.Msg,
+									'',
+									'success'
+							);
+							if (remember_checkbox) {
+								$.cookie('name',uname);
+								$.cookie('pwd',pwd);
+							}
+							setTimeout("location.href=\"/admin/index\";",1500);
+						} else {
+							swal(res.Msg, "", "error");
+						}
+					}
+				});
+			}
+		}
+
+
 	</script>
 </body>
 </html>

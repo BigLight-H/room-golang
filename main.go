@@ -17,6 +17,7 @@ func init()  {
 
 
 func main() {
+	beego.BConfig.WebConfig.Session.SessionOn = true
 	beego.AddFuncMap("convertTime", util.TimeToStr)//模板函数
 	beego.Run()
 }

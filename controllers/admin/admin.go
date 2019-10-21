@@ -225,3 +225,9 @@ func (a *AdminController) UpdateRebate() {
 	a.Data["data"] = r
 	a.TplName = "admin/update-rebate.html"
 }
+
+//退出
+func (p *AdminController) Logout() {
+	p.DestroySession()
+	p.History("退出登录", "/")
+}

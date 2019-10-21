@@ -1,16 +1,16 @@
 package routers
 
 import (
-	"room/controllers"
 	"github.com/astaxie/beego"
 	"room/controllers/admin"
 )
 
 func init() {
 	//登陆首页
-    beego.Router("/", &controllers.LoginController{}, "get:Index")
-    beego.Router("/register", &controllers.LoginController{}, "get:Register")
-    beego.Router("/register", &controllers.LoginController{}, "post:Register")
+    beego.Router("/", &admin.LoginController{}, "get:Index")
+    beego.Router("/login", &admin.LoginController{}, "post:Login")
+    beego.Router("/register", &admin.LoginController{}, "get:Register")
+    beego.Router("/register", &admin.LoginController{}, "post:Register")
 
     //后台首页
 	beego.Router("/admin/index", &admin.AdminController{}, "get:Index")
@@ -26,4 +26,6 @@ func init() {
 	beego.Router("/admin/types/del", &admin.AdminController{}, "post:DelTypes")
 	beego.Router("/admin/rebate/add", &admin.AdminController{}, "get:TypesList")
 	beego.Router("/admin/rebate/add", &admin.AdminController{}, "post:AddRebate")
+	beego.Router("/logout", &admin.AdminController{}, "get:Logout")
+
 }

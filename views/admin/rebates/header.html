@@ -55,16 +55,11 @@
         <ul class="navbar-nav navbar-right">
             <li class="dropdown navbar-user">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <img src="/static/assets/img/user/user-13.jpg" alt="" />
-                    <span class="d-none d-md-inline">Adam Schwartz</span> <b class="caret"></b>
+                    <img src="{{ .user_data.Logo }}" alt="" />
+                    <span class="d-none d-md-inline">{{ .user_data.Name }}</span> <b class="caret"></b>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a href="javascript:;" class="dropdown-item">Edit Profile</a>
-                    <a href="javascript:;" class="dropdown-item"><span class="badge badge-danger pull-right">2</span> Inbox</a>
-                    <a href="javascript:;" class="dropdown-item">Calendar</a>
-                    <a href="javascript:;" class="dropdown-item">Setting</a>
-                    <div class="dropdown-divider"></div>
-                    <a href="javascript:;" class="dropdown-item">Log Out</a>
+                    <a href="/logout" class="dropdown-item">退出登录</a>
                 </div>
             </li>
         </ul>
@@ -82,20 +77,17 @@
                     <a href="javascript:;" data-toggle="nav-profile">
                         <div class="cover with-shadow"></div>
                         <div class="image">
-                            <img src="/static/assets/img/user/user-13.jpg" alt="" />
+                            <img src="{{ .user_data.Logo }}" alt="" />
                         </div>
                         <div class="info">
                             <b class="caret pull-right"></b>
-                            Sean Ngu
-                            <small>Front end developer</small>
+                            {{ .user_data.Name }}
                         </div>
                     </a>
                 </li>
                 <li>
                     <ul class="nav nav-profile">
-                        <li><a href="javascript:;"><i class="fa fa-cog"></i> Settings</a></li>
-                        <li><a href="javascript:;"><i class="fa fa-pencil-alt"></i> Send Feedback</a></li>
-                        <li><a href="javascript:;"><i class="fa fa-question-circle"></i> Helps</a></li>
+                        <li><a href="/logout"><i class="fa fa-question-circle"></i> 退出登录</a></li>
                     </ul>
                 </li>
             </ul>

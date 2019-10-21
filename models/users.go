@@ -14,7 +14,7 @@ type Users struct {
 	Pwd     string
 	Mobile  string
 	Email   string
-	Login   string
+	Logo   string
 	Created time.Time
 	Updated time.Time
 }
