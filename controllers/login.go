@@ -15,6 +15,12 @@ func (p *LoginController) Login() {
 	p.TplName = "login.html"
 }
 
+//注册
+func (p *LoginController) Register() {
+
+	p.TplName = "register.html"
+}
+
 //退出
 func (p *LoginController) Logout() {
 	p.TplName = "login.html"
