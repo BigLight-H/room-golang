@@ -127,15 +127,14 @@
             if (Number(coupon_val)) {
                 new_sum = sum - Number(coupon_val);
                 $('#compute-all').text('(' + str.slice(0,-3)+' ) - '+ coupon_val +' = '+ new_sum);
-                $('#money-sum').text(new_sum);
+                $('#money-sum').text(sum);
             } else {
                 $('#compute-all').text(str.slice(0,-3)+' = '+sum);
                 $('#money-sum').text(sum);
             }
         } else {
             if (Number(coupon_val)) {
-                sum_money = Number($('#row-value0').text()) - Number(coupon_val);
-                $('#money-sum').text(sum_money);
+                $('#money-sum').text(Number($('#row-value0').text()));
                 $('#compute-all').text($('#row-value0').text() + ' - ' + coupon_val + ' = ' + sum_money);
             } else {
                 $('#money-sum').text($('#row-value0').text());
@@ -169,23 +168,22 @@
         $('#console').text('');
         var hidden_val = Number($('#hidden-value').val());
         str = '';
+        money_sum = 0;
         for(j = 0; j <= hidden_val; j++) {
             var type_txt = $('#type-value'+j).find("option:selected").text();
             var type_val = $('#type-value'+j).val();
             var size_val = $('#size-value'+j).val();
             var sum = type_val * size_val;
             str += type_txt+'($'+type_val+'/尺), 预估'+size_val+'尺, 价格为$'+sum+'\n';
+            money_sum = money_sum + sum;
         }
-        money_sum = $('#money-sum').val();
-        coupon = $('#coupon').val();
-        moneys = $('#moneys').val();
+        coupon= $('#coupon-value').val();
         if (coupon == '' || coupon == 0) {
-            console.log(moneys);
-            str += '预估总价为:$'+moneys;
+            str += '预估总价为:$'+money_sum;
         } else {
-            str += '预估总价为:$'+money_sum+',参加活动 '+$('#coupon').val()+'后,价格为$'+moneys;
+            hk = Number(money_sum) - Number(coupon);
+            str += '预估总价为:$'+money_sum+',参加活动 '+$('#coupon-value').find("option:selected").text()+'后,价格为$'+hk;
         }
-
         $('#console').val(str);
     }
     
@@ -299,7 +297,7 @@
                 setTimeout(function() {
                     $.gritter.add({
                         title: '欢迎来到家私计算器!',
-                        text: '哒哒哒哒哒哒多多多',
+                        text: '快去计算你的家私金额吧...',
                         image: '/static/img/home_office.png',
                         sticky: true,
                         time: '',

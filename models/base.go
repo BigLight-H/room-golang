@@ -23,6 +23,7 @@ func Init() {
 		new(Types),
 		new(Permissions),
 		new(Rebate),
+		new(Sidebar),
 		)
 }
 

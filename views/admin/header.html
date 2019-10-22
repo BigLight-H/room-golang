@@ -101,36 +101,14 @@
             <!-- begin sidebar nav -->
             <ul class="nav">
                 <li class="nav-header">菜单</li>
-                <li class="has-sub active">
-                    <a href="/admin/index">
-                        <i class="fa fa-calculator"></i>
-                        <span>计算器</span>
+                {{range .sidebar}}
+                <li class="has-sub {{ .Active }}">
+                    <a href="{{ .Url }}">
+                        <i class="{{ .Font }}"></i>
+                        <span>{{ .Name }}</span>
                     </a>
                 </li>
-                <li class="has-sub">
-                    <a href="/admin/types/list">
-                        <i class="fa fa-tasks"></i>
-                        <span>类型列表</span>
-                    </a>
-                </li>
-                <li class="has-sub">
-                    <a href="/admin/types">
-                        <i class="fa fa-tags"></i>
-                        <span>类型添加</span>
-                    </a>
-                </li>
-                <li class="has-sub">
-                    <a href="/admin/rebate/list">
-                        <i class="fa fa-list-alt"></i>
-                        <span>活动列表</span>
-                    </a>
-                </li>
-                <li class="has-sub">
-                    <a href="/admin/rebate">
-                        <i class="fa fa-puzzle-piece"></i>
-                        <span>活动添加</span>
-                    </a>
-                </li>
+                {{end}}
             </ul>
             <!-- end sidebar nav -->
         </div>
