@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+	<meta charset="utf-8" />
+	<title>家私计算器 | 注册</title>
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+	
+	<!-- ================== BEGIN BASE CSS STYLE ================== -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+	<link href="/static/assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+	<link href="/static/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="/static/assets/plugins/font-awesome/css/all.min.css" rel="stylesheet" />
+	<link href="/static/assets/plugins/animate/animate.min.css" rel="stylesheet" />
+	<link href="/static/assets/css/default/style.min.css" rel="stylesheet" />
+	<link href="/static/assets/css/default/style-responsive.min.css" rel="stylesheet" />
+	<link href="/static/assets/css/default/theme/default.css" rel="stylesheet" id="theme" />
+	<!-- ================== END BASE CSS STYLE ================== -->
+	
+	<!-- ================== BEGIN BASE JS ================== -->
+	<script src="/static/assets/plugins/pace/pace.min.js"></script>
+	<!-- ================== END BASE JS ================== -->
+	<link href="/static/sweetalert2.min.css" rel="stylesheet">
+</head>
+<body class="pace-top bg-white">
+	<!-- begin #page-loader -->
+	<div id="page-loader" class="fade show"><span class="spinner"></span></div>
+	<!-- end #page-loader -->
+	
+	<!-- begin #page-container -->
+	<div id="page-container" class="fade">
+		<!-- begin register -->
+		<div class="register register-with-news-feed">
+			<!-- begin news-feed -->
+			<div class="news-feed">
+				<div class="news-image" style="background-image: url(/static/assets/img/login-bg/login-bg-9.jpg)"></div>
+				<div class="news-caption">
+					<h4 class="caption-title"><b>家私报价</b> 计算平台</h4>
+					<p>
+						优秀的免费的家私报价计算平台...
+					</p>
+				</div>
+			</div>
+			<!-- end news-feed -->
+			<!-- begin right-content -->
+			<div class="right-content">
+				<!-- begin register-header -->
+				<h1 class="register-header">
+					注册
+					<small>创建你的个人账号,欢迎加入.</small>
+				</h1>
+				<!-- end register-header -->
+				<!-- begin register-content -->
+				<div class="register-content">
+					<form action="index.html" method="GET" class="margin-bottom-0">
+						<label class="control-label">名字 <span class="text-danger">*</span></label>
+						<div class="row m-b-15">
+							<div class="col-md-12">
+								<input id="name" type="text" class="form-control" placeholder="输入名字" required />
+							</div>
+						</div>
+						<label class="control-label">邮箱 <span class="text-danger">*</span></label>
+						<div class="row m-b-15">
+							<div class="col-md-12">
+								<input id="email" type="text" class="form-control" placeholder="输入邮箱" required />
+							</div>
+						</div>
+						<label class="control-label">密码 <span class="text-danger">*</span></label>
+						<div class="row m-b-15">
+							<div class="col-md-12">
+								<input id="pwd" type="password" class="form-control" placeholder="输入密码" required />
+							</div>
+						</div>
+						<label class="control-label">确认密码 <span class="text-danger">*</span></label>
+						<div class="row m-b-15">
+							<div class="col-md-12">
+								<input id="pwd1" type="password" class="form-control" placeholder="确认密码" required />
+							</div>
+						</div>
+						<div class="register-buttons">
+							<a class="btn btn-primary btn-block btn-lg" onclick="registerUser()" style="color: #ffffff">注 册</a>
+						</div>
+						<div class="m-t-20 m-b-40 p-b-40 text-inverse">
+							你已经又账号? 点 <a href="/">进入登录</a>
+						</div>
+						<hr />
+						<p class="text-center">
+							&copy; Color Admin All Right Reserved 2019
+						</p>
+					</form>
+				</div>
+				<!-- end register-content -->
+			</div>
+			<!-- end right-content -->
+		</div>
+		<!-- end register -->
+
+	</div>
+	<!-- end page container -->
+	
+	<!-- ================== BEGIN BASE JS ================== -->
+	<script src="/static/assets/plugins/jquery/jquery-3.3.1.min.js"></script>
+	<script src="/static/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+	<script src="/static/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!--[if lt IE 9]>
+		<script src="/static/assets/crossbrowserjs/html5shiv.js"></script>
+		<script src="/static/assets/crossbrowserjs/respond.min.js"></script>
+		<script src="/static/assets/crossbrowserjs/excanvas.min.js"></script>
+	<![endif]-->
+	<script src="/static/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="/static/assets/plugins/js-cookie/js.cookie.js"></script>
+	<script src="/static/assets/js/theme/default.min.js"></script>
+	<script src="/static/assets/js/apps.min.js"></script>
+	<!-- ================== END BASE JS ================== -->
+	<script src="/static/sweetalert2.js"></script>
+
+	<script>
+		$(document).ready(function() {
+			App.init();
+		});
+
+		function registerUser() {
+			uname = $('#name').val();
+			email = $('#email').val();
+			pwd = $('#pwd').val();
+			pwd1 = $('#pwd1').val();
+			var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+			var pattern = /^[\w_-]{6,10}$/;
+			num = Math.floor(Math.random()*10+1);
+			if (uname == '') {
+				swal(
+					"名字不能为空!",
+					'',
+					'error'
+				);
+			} else if (email == '') {
+				swal(
+					"邮箱不能为空!",
+					'',
+					'error'
+				);
+			} else if (pwd == '') {
+				swal(
+					"密码不能为空!",
+					'',
+					'error'
+				);
+			}  else if (pwd1 == '') {
+				swal(
+						"确认密码不能为空!",
+						'',
+						'error'
+				);
+			} else if (pwd !== pwd1) {
+				swal(
+						"两次密码不相同!",
+						'',
+						'error'
+				);
+			} else if (! reg.test(email)) {
+				swal(
+						"邮箱格式错误!",
+						'',
+						'error'
+				);
+			} else if (! pattern.test(pwd) ) {
+				swal(
+						"密码长度6-10之间!",
+						'',
+						'error'
+				);
+			} else {
+				$.ajax({
+					type : "post",
+					url : "/register",    //请求发送到TestServlet处
+					data : {name:uname,email:email,pwd:pwd,pwd1:pwd1,num:num},
+					dataType : "json",        //返回数据形式为json
+					success : function(res) {
+						if (res.Status) {
+							swal(
+								res.Msg,
+								'',
+								'success'
+							);
+							setTimeout("location.href=\"/\";",2000);
+						} else {
+							swal(res.Msg, "", "error");
+						}
+					}
+				});
+			}
+
+		}
+
+	</script>
+</body>
+</html>

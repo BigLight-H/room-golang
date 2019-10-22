@@ -1,10 +1,31 @@
 package routers
 
 import (
-	"room/controllers"
 	"github.com/astaxie/beego"
+	"room/controllers/admin"
 )
 
 func init() {
-    beego.Router("/", &controllers.MainController{})
+	//登陆首页
+    beego.Router("/", &admin.LoginController{}, "get:Index")
+    beego.Router("/login", &admin.LoginController{}, "post:Login")
+    beego.Router("/register", &admin.LoginController{}, "get:Register")
+    beego.Router("/register", &admin.LoginController{}, "post:Register")
+
+    //后台首页
+	beego.Router("/admin/index", &admin.AdminController{}, "get:Index")
+	beego.Router("/admin/types", &admin.AdminController{}, "get:TypesTpl")
+	beego.Router("/admin/rebate", &admin.AdminController{}, "get:RebateTpl")
+	beego.Router("/admin/rebate/list", &admin.AdminController{}, "get:RebateList")
+	beego.Router("/admin/rebate/update/:id", &admin.AdminController{}, "get:UpdateRebate")
+	beego.Router("/admin/rebate/del", &admin.AdminController{}, "post:DelRebate")
+	beego.Router("/admin/types/list", &admin.AdminController{}, "get:TypesList")
+	beego.Router("/admin/types/add", &admin.AdminController{}, "get:TypesTpl")
+	beego.Router("/admin/types/update/?:id", &admin.AdminController{}, "get:UpdateTypes")
+	beego.Router("/admin/types/add", &admin.AdminController{}, "post:AddTypes")
+	beego.Router("/admin/types/del", &admin.AdminController{}, "post:DelTypes")
+	beego.Router("/admin/rebate/add", &admin.AdminController{}, "get:TypesList")
+	beego.Router("/admin/rebate/add", &admin.AdminController{}, "post:AddRebate")
+	beego.Router("/logout", &admin.AdminController{}, "get:Logout")
+
 }

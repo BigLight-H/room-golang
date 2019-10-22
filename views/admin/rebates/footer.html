@@ -1,0 +1,111 @@
+
+<!-- begin scroll to top btn -->
+<a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+<!-- end scroll to top btn -->
+</div>
+<!-- end page container -->
+
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="/static/assets/plugins/jquery/jquery-3.3.1.min.js"></script>
+<script src="/static/assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+<script src="/static/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+<script src="/static/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!--[if lt IE 9]>
+<script src="/static/assets/crossbrowserjs/html5shiv.js"></script>
+<script src="/static/assets/crossbrowserjs/respond.min.js"></script>
+<script src="/static/assets/crossbrowserjs/excanvas.min.js"></script>
+<![endif]-->
+<script src="/static/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/static/assets/plugins/js-cookie/js.cookie.js"></script>
+<script src="/static/assets/js/theme/default.min.js"></script>
+<script src="/static/assets/js/apps.min.js"></script>
+<!-- ================== END BASE JS ================== -->
+
+<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+<script src="/static/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="/static/assets/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js" charset="UTF-8"></script>
+<script src="/static/assets/js/demo/form-plugins.demo.min.js"></script>
+
+<!-- ================== END PAGE LEVEL JS ================== -->
+<script src="/static/sweetalert2.js"></script>
+
+<script>
+    $(document).ready(function() {
+        App.init();
+        FormPlugins.init();
+    });
+    $('.input-daterange input').datepicker({
+        language: 'zh-CN',
+        orientation:'bottom'
+    });
+
+    function push_rebate() {
+        ids = $('#rebate-ids').val() ? $('#rebate-ids').val() : '';
+        title = $('#push-name').val();
+        money = $('#push-money').val();
+        date_star = $('#push-star').val();
+        date_end = $('#push-end').val();
+        push_moneys = $('#push-moneys').val();
+
+        if (title == '') {
+            swal(
+                '活动名称不能为空！',
+                '',
+                'error'
+            )
+        } else if (push_moneys == ''){
+            swal(
+                '活动折扣金额不能为空！',
+                '',
+                'error'
+            )
+        } else if (money == ''){
+            swal(
+                '活动金额不能为空！',
+                '',
+                'error'
+            )
+        } else if (date_star == '') {
+            swal(
+                '活动开始时间不能为空！',
+                '',
+                'error'
+            )
+        } else if (date_end =='') {
+            swal(
+                '活动结束时间不能为空！',
+                '',
+                'error'
+            )
+        } else {
+            if (ids) {
+                pushAjax('post','/admin/rebate/add',{ids:ids,title:title,money:money,push_moneys:push_moneys,date_star:date_star,date_end:date_end},"添加");
+            } else {
+                pushAjax('post','/admin/rebate/add',{ids:ids,title:title,money:money,push_moneys:push_moneys,date_star:date_star,date_end:date_end},"添加");
+            }
+        }
+    }
+    function pushAjax(type,url,data,str) {
+        $.ajax({
+            type : type,
+            url : url,    //请求发送到TestServlet处
+            data : data,
+            dataType : "json",        //返回数据形式为json
+            success : function(res) {
+                if (res == 1) {
+                    swal(
+                        str+"成功!",
+                        '',
+                        'success'
+                    );
+                    setTimeout("location.reload()",1500);
+                } else {
+                    swal(str+"失败!", "", "error");
+                }
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

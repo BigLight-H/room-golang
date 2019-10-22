@@ -1,0 +1,314 @@
+
+<!-- begin scroll to top btn -->
+<a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+<!-- end scroll to top btn -->
+</div>
+<!-- end page container -->
+
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="/static/assets/plugins/jquery/jquery-3.3.1.min.js"></script>
+<script src="/static/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+<script src="/static/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!--[if lt IE 9]>
+<script src="/static/assets/crossbrowserjs/html5shiv.js"></script>
+<script src="/static/assets/crossbrowserjs/respond.min.js"></script>
+<script src="/static/assets/crossbrowserjs/excanvas.min.js"></script>
+<![endif]-->
+<script src="/static/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="/static/assets/plugins/js-cookie/js.cookie.js"></script>
+<script src="/static/assets/js/theme/default.min.js"></script>
+<script src="/static/assets/js/apps.min.js"></script>
+<!-- ================== END BASE JS ================== -->
+
+<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+<script src="/static/assets/plugins/gritter/js/jquery.gritter.js"></script>
+<script src="/static/assets/plugins/flot/jquery.flot.min.js"></script>
+<script src="/static/assets/plugins/flot/jquery.flot.time.min.js"></script>
+<script src="/static/assets/plugins/flot/jquery.flot.resize.min.js"></script>
+<script src="/static/assets/plugins/flot/jquery.flot.pie.min.js"></script>
+<script src="/static/assets/plugins/sparkline/jquery.sparkline.js"></script>
+<script src="/static/assets/plugins/jquery-jvectormap/jquery-jvectormap.min.js"></script>
+<script src="/static/assets/plugins/jquery-jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+<script src="/static/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="/static/assets/js/demo/dashboard.js"></script>
+<!-- ================== END PAGE LEVEL JS ================== -->
+
+<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+<script src="/static/assets/plugins/DataTables/media/js/jquery.dataTables.js"></script>
+<script src="/static/assets/plugins/DataTables/media/js/dataTables.bootstrap.min.js"></script>
+<script src="/static/assets/plugins/DataTables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+<script src="/static/assets/js/demo/table-manage-default.demo.min.js"></script>
+<!-- ================== END PAGE LEVEL JS ================== -->
+<script src="/static/sweetalert2.js"></script>
+<script src="/static/js/jquery.cookie.min.js"></script>
+<script>
+    $(document).ready(function() {
+        App.init();
+        Dashboard.init();
+        TableManageDefault.init();
+    });
+
+    //追加表元素
+    $(document).ready(function(){
+        data = {{ .select }}
+        $("#add-tb").click(function(){
+            num = Number($('#hidden-value').val()) + 1;
+            $("#now-table").append("<tr id=\"list_"+num+"\">\n" +
+                "                            <td style=\"padding-left: 0;\">\n" +
+                "                                <div class=\"col-md-8\" style=\"padding: 0\">\n" +
+                "                                    <select class=\"default-select2 form-control\" id=\"type-value"+num+"\">\n" +
+                "                                        <option value=\"\">选择类型</option>\n" +
+                                                            data +
+                "                                    </select>\n" +
+                "                                </div>\n" +
+                "                            </td>\n" +
+                "                            <td class=\"text-center\" style=\"padding-left: 0;padding-right: 0;\">\n" +
+                "                                <div class=\"col-md-12\" style=\"padding: 0;\">\n" +
+                "                                    <input data-toggle=\"text\" class=\"form-control\" type=\"text\" placeholder=\"输入尺寸\" id=\"size-value"+num+"\" oninput=\"inputnum(this)\" onchange=\"inputChange("+num+");\" />\n" +
+                "                                </div>\n" +
+                "                            </td>\n" +
+                "                            <td class=\"text-right\" id=\"row-value"+num+"\" style=\"padding-right: 0;line-height: 36px;text-align: center !important;\">0.00</td>\n" +
+                "                            <td onclick=\"delList("+num+")\" class=\"text-right\" style=\"line-height: 36px;padding-left: 0;padding-right: 0;text-align: center !important;\">\n" +
+                "                                <i class=\"fas fa-lg fa-fw m-r-10 fa-window-close\" style=\"margin: 0 !important;color: red\"></i>\n" +
+                "                            </td>" +
+                "                        </tr>");
+            $('#hidden-value').val(num)
+        });
+    });
+
+    function delList(num) {
+        old_num = Number($('#hidden-value').val());
+        if ( old_num > 0 ) {
+            res = Number(num) - old_num;
+            if (res == 0) {
+                $("#list_"+num).remove();
+                $('#hidden-value').val(old_num - 1);
+            } else {
+                swal(
+                    "依次倒序删除!",
+                    '',
+                    'error'
+                );
+            }
+        } else {
+            swal(
+                "不能删除!",
+                '',
+                'error'
+            );
+        }
+
+    }
+
+
+    function sumRow(num) {
+        var type_val = $('#type-value'+num).val();
+        var size_val = $('#size-value'+num).val();
+        $('#row-value'+num).text(type_val * size_val);
+    }
+
+    function countResult() {
+        sumAll();
+        compute();
+        countTxt();
+    }
+
+    function sumAll() {
+        var hidden_val = Number($('#hidden-value').val());
+        var sum = 0;
+        var str = '';
+        coupon_val = $('#coupon-value').val();
+        if (hidden_val) {
+            for(j = 0; j <= hidden_val; j++) {
+                val = $('#row-value'+j).text();
+                sum = sum + Number(val);
+                str += val+' + ';
+            }
+            if (Number(coupon_val)) {
+                new_sum = sum - Number(coupon_val);
+                $('#compute-all').text('(' + str.slice(0,-3)+' ) - '+ coupon_val +' = '+ new_sum);
+                $('#money-sum').text(sum);
+            } else {
+                $('#compute-all').text(str.slice(0,-3)+' = '+sum);
+                $('#money-sum').text(sum);
+            }
+        } else {
+            if (Number(coupon_val)) {
+                $('#money-sum').text(Number($('#row-value0').text()));
+                $('#compute-all').text($('#row-value0').text() + ' - ' + coupon_val + ' = ' + sum_money);
+            } else {
+                $('#money-sum').text($('#row-value0').text());
+                $('#compute-all').text($('#row-value0').text());
+            }
+        }
+        totalMoney();
+    }
+    
+    function totalMoney() {
+        var money = $('#money-sum').text();
+        var coupon = $('#coupon-value').val() ? $('#coupon-value').val() : 0;
+        if (coupon > 0) {
+            $('#coupon').text( coupon + '(' + $('#coupon-value').find("option:selected").text() + ')');
+        } else {
+            $('#coupon').text( coupon );
+        }
+        $('#moneys').text(Number(money) - Number(getAmount(money,coupon)));
+    }
+
+    //总数大于活动数才可以参加活动
+    function getAmount(money,amount) {
+        if (Number(amount) >= Number(money)) {
+            return 0;
+        }
+        return amount;
+    }
+    
+    //统计文本
+    function countTxt() {
+        $('#console').text('');
+        var hidden_val = Number($('#hidden-value').val());
+        str = '';
+        money_sum = 0;
+        for(j = 0; j <= hidden_val; j++) {
+            var type_txt = $('#type-value'+j).find("option:selected").text();
+            var type_val = $('#type-value'+j).val();
+            var size_val = $('#size-value'+j).val();
+            var sum = type_val * size_val;
+            str += type_txt+'($'+type_val+'/尺), 预估'+size_val+'尺, 价格为$'+sum+'\n';
+            money_sum = money_sum + sum;
+        }
+        coupon= $('#coupon-value').val();
+        if (coupon == '' || coupon == 0) {
+            str += '预估总价为:$'+money_sum;
+        } else {
+            hk = Number(money_sum) - Number(coupon);
+            str += '预估总价为:$'+money_sum+',参加活动 '+$('#coupon-value').find("option:selected").text()+'后,价格为$'+hk;
+        }
+        $('#console').val(str);
+    }
+    
+
+    function inputnum(obj,val){
+        obj.value = obj.value.replace(/[^\d.]/g,""); //清除"数字"和"."以外的字符
+        obj.value = obj.value.replace(/^\./g,""); //验证第一个字符是数字
+        obj.value = obj.value.replace(/\.{2,}/g,""); //只保留第一个, 清除多余的
+        obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+        obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3'); //只能输入两个小数
+    }
+
+    function inputChange(num) {
+        sumRow(num);
+    }
+
+    function compute() {
+        $('#compute').text('');
+        var hidden_val = Number($('#hidden-value').val());
+        for(j = 0; j <= hidden_val; j++) {
+            var type_val = $('#type-value'+j).val();
+            var size_val = $('#size-value'+j).val();
+            var sum = type_val * size_val;
+            $('#compute').append(
+                 "<p>"+ type_val +" * "+ size_val +" = " + sum +" </p>"
+            )
+        }
+    }
+
+    //添加分类
+    function push_types() {
+        ids = $('#type-ids').val() ? $('#type-ids').val() : '';
+        title = $('#push-type-name').val();
+        money = $('#push-type-money').val();
+        sel = $('#push-type-sel').val();
+        if (title == '') {
+            swal(
+                "分类名字不能为空!",
+                '',
+                'error'
+            );
+        } else if (sel != '' && money == '') {
+            swal(
+                "分类金额不能为空!",
+                '',
+                'error'
+            );
+        } else {
+            if (ids) {
+                pushAjax("post","/admin/types/add",{ids:ids,title:title,money:money,sel:sel},'修改')
+            } else {
+                pushAjax("post","/admin/types/add",{ids:ids,title:title,money:money,sel:sel},'添加')
+            }
+
+        }
+    }
+
+    function delTypes(id) {
+        swal({
+            title: '确定删除吗？',
+            text: '你将无法恢复它！',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '确定删除！',
+        }).then(function(){
+            pushAjax('post','/admin/types/del',{id:id},"删除");
+        })
+    }
+
+    function delRebate(id) {
+        swal({
+            title: '确定删除吗？',
+            text: '你将无法恢复它！',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '确定删除！',
+        }).then(function(){
+            pushAjax('post','/admin/rebate/del',{id:id},"删除");
+        })
+    }
+
+    function pushAjax(type,url,data,str) {
+        $.ajax({
+            type : type,
+            url : url,    //请求发送到TestServlet处
+            data : data,
+            dataType : "json",        //返回数据形式为json
+            success : function(res) {
+                if (res == 1) {
+                    swal(
+                        str+"成功!",
+                        '',
+                        'success'
+                    );
+                    setTimeout("location.reload()",1500);
+                } else {
+                    swal(str+"失败!", "", "error");
+                }
+            }
+        });
+    }
+
+    var handleDashboardGritterNotification = function() {
+        dumplings = $.cookie('names');
+        if (! dumplings) {
+            $(window).on('load', function() {
+                setTimeout(function() {
+                    $.gritter.add({
+                        title: '欢迎来到家私计算器!',
+                        text: '快去计算你的家私金额吧...',
+                        image: '/static/img/home_office.png',
+                        sticky: true,
+                        time: '',
+                        class_name: 'my-sticky-class'
+                    });
+                }, 1000);
+            });
+            $.cookie('names','dumplings');
+        }
+    };
+
+</script>
+</body>
+</html>

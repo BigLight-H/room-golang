@@ -1,0 +1,149 @@
+{{template "admin/header.html" .}}
+<!-- begin #content -->
+<div id="content" class="content">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb hidden-print pull-right">
+        <li class="breadcrumb-item"><a href="/admin/index">首页</a></li>
+        <li class="breadcrumb-item active">计算器</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header hidden-print">计算器 <small>家私计算...</small></h1>
+    <!-- end page-header -->
+    <!-- begin invoice -->
+    <div class="invoice">
+        <!-- begin invoice-company -->
+        <div class="invoice-company text-inverse f-w-600">
+
+        </div>
+        <!-- end invoice-company -->
+
+        <!-- begin invoice-content -->
+        <div class="invoice-content">
+            <!-- begin table-responsive -->
+            <div class="table-responsive">
+                <table class="table table-invoice">
+                    <thead>
+                    <tr>
+                        <th>类 型</th>
+                        <th class="text-center" width="20%">尺 寸</th>
+                        <th class="text-center" width="30%">金 额</th>
+                        <th class="text-right" width="1%" style="padding-right: 0;padding-left: 0;">操 作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="now-table">
+                        <tr id="list_0">
+                            <td style="padding-left: 0;">
+                                <div class="col-md-10" style="padding: 0">
+                                    <select class="default-select2 form-control" id="type-value0">
+                                        <option value="">选择类型</option>
+                                        {{range $elem := .types}}
+                                            {{if eq $elem.Pid 0 }}
+                                                <optgroup label="{{ $elem.Type }}">
+                                                    {{range $v := $.types}}
+                                                        {{if eq $v.Pid $elem.Id}}
+                                                            <option value="{{ $v.Money }}">{{ $v.Type }}</option>
+                                                        {{end}}
+                                                    {{end}}
+                                                </optgroup>
+                                            {{end}}
+                                        {{end}}
+                                    </select>
+                                </div>
+                            </td>
+                            <td class="text-center" style="padding-left: 0;padding-right: 0;">
+                                <div class="col-md-12" style="padding: 0;">
+                                    <input data-toggle="text" class="form-control" type="text" placeholder="输入尺寸" id="size-value0" oninput="inputnum(this)" onchange="inputChange(0);" />
+                                </div>
+                            </td>
+                            <td class="text-right" id="row-value0" style="padding-right: 0;line-height: 36px;text-align: center !important; ">0.00</td>
+                            <td onclick="delList(0)" class="text-right" id="row-value0" style="line-height: 36px;padding-left: 0;padding-right: 0;text-align: center !important;">
+                                <i class="fas fa-lg fa-fw m-r-10 fa-window-close" style="margin: 0 !important;color: red"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr style="background: #cacaca;">
+                <p>
+                    <a href="#" class="btn btn-info btn-block" id="add-tb">增加表单行数</a>
+                </p>
+            </div>
+            <!-- end table-responsive -->
+
+            <!-- switcher -->
+            <div class="form-group row m-b-12" style="padding: 2rem 0;">
+                <label class="col-md-1 col-form-label" style="text-align: center;font-size: 17px;">选择活动</label>
+                <div class="col-md-8">
+                    <select class="default-select2 form-control" id="coupon-value">
+                        <option value="">请选择参与活动</option>
+                        {{range .rebate}}
+                            <option value="{{ .Rebate }}">{{ .Title }}</option>
+                        {{end}}
+                    </select>
+                </div>
+            </div>
+
+            <div class="invoice-content">
+                <p>
+                    <a href="#" class="btn btn-primary btn-block" onclick="countResult()">计算结果</a>
+                </p>
+            </div>
+
+            <!-- begin invoice-price -->
+            <div class="invoice-price">
+                <div class="invoice-price-left">
+                    <div class="invoice-price-row">
+                        <div class="sub-price">
+                            <small>总金额</small>
+                            <span class="text-inverse" id="money-sum">0.00</span>
+                        </div>
+                        <div class="sub-price">
+                            <i class="fas fa-lg fa-fw fa-minus"></i>
+                        </div>
+                        <div class="sub-price">
+                            <small>活动优惠</small>
+                            <span class="text-inverse" id="coupon">0.00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="invoice-price-right">
+                    <small>实付金额</small> <span class="f-w-600" id="moneys">0.00</span>
+                </div>
+            </div>
+            <!-- end invoice-price -->
+            <div class="col-lg-12 col-md-12" style="padding: 2rem 0 0 0;">
+                <!-- begin #accordion -->
+                <div id="accordion" class="card-accordion">
+                    <!-- begin card -->
+                    <div class="card">
+                        <div class="card-header bg-black text-white pointer-cursor collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" style="background: #888888 !important;text-align: center">
+                            计 算 公 式
+                        </div>
+                        <div id="collapseOne" class="collapse" data-parent="#accordion" style="">
+                            <div class="card-body">
+                                <div id="compute"></div>
+                                <hr>
+                                <div class="row" id="compute-all"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end card -->
+                </div>
+                <!-- end #accordion -->
+            </div>
+
+            <div class="col-lg-12 col-md-12" style="padding: 2rem 0;">
+                <h4 class="m-t-0 m-b-15"><b>计算文本</b></h4>
+                <div>
+                    <textarea id="console" rows="20" class="form-control" placeholder="计算文本..."></textarea>
+                </div>
+            </div>
+
+        </div>
+        <!-- end invoice-content -->
+    </div>
+    <!-- end invoice -->
+</div>
+<!-- end #content -->
+<input type="hidden" value="0" id="hidden-value">
+{{template "admin/footer.html" .}}

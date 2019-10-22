@@ -1,0 +1,57 @@
+{{template "admin/header.html" .}}
+<!-- begin #content -->
+<!-- begin #content -->
+<div id="content" class="content">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb pull-right">
+        <li class="breadcrumb-item"><a href="/admin/index">首页</a></li>
+        <li class="breadcrumb-item active">分类列表</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">分类列表</h1>
+    <!-- end page-header -->
+    <!-- begin panel -->
+    <div class="panel panel-inverse">
+        <!-- begin panel-body -->
+        <div class="panel-body">
+            <table id="data-table-default" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th width="10%">ID</th>
+                        <th class="text-nowrap">类型名称</th>
+                        <th class="text-nowrap">金额</th>
+                        <th class="text-nowrap">级别</th>
+                        <th class="text-nowrap">创建时间</th>
+                        <th class="text-nowrap">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{range .list}}
+                    <tr class="odd gradeX">
+                        <td width="10%" class="f-s-600 text-inverse">{{ .Id }}</td>
+                        <td>{{ .Type }}</td>
+                        <td>{{ .Money }}</td>
+                        {{if eq .Pid 0}}
+                            <td>父级</td>
+                        {{else}}
+                            <td>子级</td>
+                        {{end}}
+                        <td>{{convertTime .Created}}</td>
+                        <td>
+                            <button type="button" class="btn btn-lime" onclick="javascrtpt:window.location.href='/admin/types/update/{{ .Id }}'">修改</button>
+                            <button type="button" class="btn btn-danger" onclick="delTypes({{ .Id }})">删除</button>
+                        </td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+        </div>
+        <!-- end panel-body -->
+    </div>
+    <!-- end panel -->
+</div>
+<!-- end #content -->
+<!-- end #content -->
+
+{{template "admin/footer.html" .}}
