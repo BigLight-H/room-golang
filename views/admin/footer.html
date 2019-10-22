@@ -139,6 +139,7 @@
         } else {
             if (Number(coupon_val)) {
                 $('#money-sum').text(Number($('#row-value0').text()));
+                sum_money = Number($('#row-value0').text()) - coupon_val;
                 $('#compute-all').text($('#row-value0').text() + ' - ' + coupon_val + ' = ' + sum_money);
             } else {
                 $('#money-sum').text($('#row-value0').text());
